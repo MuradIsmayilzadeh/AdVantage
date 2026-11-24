@@ -1,8 +1,19 @@
 /** @type {import('next').NextConfig} */
-const nextConfig ={
-    images: {
-      domains: ['pbs.twimg.com'],
-    },
-  };
-      
+
+// Set by the GitHub Pages workflow: builds a static export served from /<repo>.
+const pagesBasePath = process.env.PAGES_BASE_PATH
+
+const nextConfig = {
+  images: {
+    domains: ['pbs.twimg.com'],
+  },
+  ...(pagesBasePath && {
+    output: 'export',
+    basePath: pagesBasePath,
+    trailingSlash: true,
+    images: { unoptimized: true },
+    env: { NEXT_PUBLIC_STATIC_EXPORT: '1' },
+  }),
+}
+
 module.exports = nextConfig

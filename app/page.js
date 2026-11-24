@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import PackageCard from "./packagecard";
 import styles from "./page.module.css";
+import samplePackages from "./lib/sample-packages";
 
 const stats = [["120+", "Brands grown"], ["4.8M", "Monthly reach"], ["3.2x", "Avg. engagement lift"]];
 
@@ -12,6 +13,12 @@ export default function Home() {
   const [sent, setSent] = useState(false);
 
   useEffect(() => {
+    // Static builds (GitHub Pages) have no API: show the built-in packages.
+    if (process.env.NEXT_PUBLIC_STATIC_EXPORT) {
+      setPackages(samplePackages);
+      setIsLoading(false);
+      return;
+    }
     fetch("/api/packages?id=-1")
       .then((r) => (r.ok ? r.json() : { packages: [] }))
       .then((d) => setPackages(d.packages || []))
