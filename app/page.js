@@ -1,88 +1,79 @@
-"use client"
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
-import PackageCard from './packagecard';
-import styles from './page.module.css';
-import { BarLoader } from 'react-spinners';
+"use client";
+import { useState, useEffect } from "react";
+import PackageCard from "./packagecard";
+import styles from "./page.module.css";
+
+const stats = [["120+", "Brands grown"], ["4.8M", "Monthly reach"], ["3.2x", "Avg. engagement lift"]];
 
 export default function Home() {
   const [packages, setPackages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [customPackage, setCustomPackage] = useState({
-    price: null,
-    phone: '',
-    instagramProfile: '',
-  });
-
-  const handleInputChange = (field, value) => {
-    setCustomPackage((prevPackage) => ({ ...prevPackage, [field]: value }));
-  };
-
-  const handleCustomPackageSubmit = () => {
-    console.log('Custom Package Submitted:', customPackage);
-    // You can add code here to send the custom package data to the server
-  };
+  const [form, setForm] = useState({ budget: "", phone: "", instagram: "" });
+  const [sent, setSent] = useState(false);
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await fetch('/api/packages?id=-1');
-        if (response.ok) {
-          const data = await response.json();
-          setPackages(data.packages);
-        } else {
-          console.error('Error fetching packages');
-        }
-      } catch (error) {
-        console.error('Error fetching packages:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    fetchData();
+    fetch("/api/packages?id=-1")
+      .then((r) => (r.ok ? r.json() : { packages: [] }))
+      .then((d) => setPackages(d.packages || []))
+      .catch(() => setPackages([]))
+      .finally(() => setIsLoading(false));
   }, []);
 
+  const update = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
+  const submit = (e) => { e.preventDefault(); setSent(true); };
+
   return (
-    <div className={styles.main}>
-      {isLoading ? (
-        <BarLoader />
-      ) : (
-        <>
-          <div className={styles.grid}>
-            {packages.map((pkg) => (
-              <PackageCard key={pkg.id} packageData={pkg} />
-            ))}
+    <main>
+      <section className={styles.hero}>
+        <div className="container">
+          <span className="eyebrow">Social media marketing</span>
+          <h1 className="h1">Turn followers into <span className="gradient-text">customers</span>.</h1>
+          <p className="lead">AdVantage plans, designs and runs your Instagram so you can focus on your business. Pick a package or build your own.</p>
+          <div className={styles.heroCta}>
+            <a href="#packages" className="btn btn-primary">See packages</a>
+            <a href="#custom" className="btn btn-ghost">Build a custom plan</a>
           </div>
-          <div className={styles.customPackageForm}>
-            <Image
-              src="https://pbs.twimg.com/profile_images/1453818753880190978/HqrrEcrI_400x400.png"
-              width={200}
-              height={200}
-            />
-            <h2>Create Custom Package</h2>
-            <input
-              type="number"
-              placeholder="Price"
-              value={customPackage.price}
-              onChange={(e) => handleInputChange('price', e.target.value)}
-            />
-            <input
-              type="number"
-              placeholder="Phone number"
-              value={customPackage.phone}
-              onChange={(e) => handleInputChange('phone', e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Instagram Profile"
-              value={customPackage.instagramProfile}
-              onChange={(e) => handleInputChange('instagramProfile', e.target.value)}
-            />
-            <button onClick={handleCustomPackageSubmit}>Submit</button>
+          <div className={styles.stats}>
+            {stats.map(([n, l]) => (<div key={l}><strong>{n}</strong><span>{l}</span></div>))}
           </div>
-        </>
-      )}
-    </div>
+        </div>
+      </section>
+
+      <section id="packages" className="section">
+        <div className="container">
+          <span className="eyebrow">Pricing</span>
+          <h2 className="h2">Packages for every stage</h2>
+          {isLoading ? (
+            <div className={styles.grid}>{[0, 1, 2].map((i) => <div key={i} className={`card ${styles.skeleton}`} />)}</div>
+          ) : packages.length ? (
+            <div className={styles.grid}>
+              {packages.map((pkg, i) => <PackageCard key={pkg.id} packageData={pkg} featured={i === 1} />)}
+            </div>
+          ) : (
+            <p className="lead">No packages are available right now.</p>
+          )}
+        </div>
+      </section>
+
+      <section id="custom" className="section">
+        <div className={`container card ${styles.custom}`}>
+          <div>
+            <span className="eyebrow">Custom</span>
+            <h2 className="h2">Need something different?</h2>
+            <p className="lead">Tell us your budget and your Instagram handle. We will call you within one business day with a tailored plan.</p>
+          </div>
+          {sent ? (
+            <div className={styles.thanks}><h3>Thanks!</h3><p>We received your request and will be in touch soon.</p></div>
+          ) : (
+            <form onSubmit={submit} className={styles.form}>
+              <input className="input" type="number" min="0" placeholder="Monthly budget ($)" value={form.budget} onChange={update("budget")} required />
+              <input className="input" type="tel" placeholder="Phone number" value={form.phone} onChange={update("phone")} required />
+              <input className="input" type="text" placeholder="Instagram profile (@handle)" value={form.instagram} onChange={update("instagram")} required />
+              <button className="btn btn-primary" type="submit">Request a plan</button>
+            </form>
+          )}
+        </div>
+      </section>
+    </main>
   );
 }

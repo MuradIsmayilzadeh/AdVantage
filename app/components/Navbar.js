@@ -1,20 +1,17 @@
-import React from 'react';
-import styles from './Navbar.module.css';
+import Link from "next/link";
+import styles from "./Navbar.module.css";
 
-const Navbar = () => {
+export default function Navbar() {
   return (
-    <nav className={styles.navbar}>
-      <a href="/" className={styles.logo}>AdVantage</a>
-      <ul className={styles.navLinks}>
-        <li>
-          <a href="/about">About</a>
-        </li>
-        <li>
-          <a href="/contact">Contact</a>
-        </li>
-      </ul>
-    </nav>
+    <header className={styles.navbar}>
+      <div className={`container ${styles.inner}`}>
+        <Link href="/" className={styles.logo}>Ad<span className="gradient-text">Vantage</span></Link>
+        <nav className={styles.links}>
+          <Link href="/#packages" className={styles.hideSm}>Packages</Link>
+          <Link href="/about">About</Link>
+          <Link href="/contact" className={`btn btn-primary ${styles.cta}`}>Get started</Link>
+        </nav>
+      </div>
+    </header>
   );
-};
-
-export default Navbar;
+}

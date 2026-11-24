@@ -1,49 +1,47 @@
-"use client"
-// pages/PackageInfo.js
+"use client";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import styles from "./page.module.css";
 
-import { useState, useEffect } from 'react';
-import styles from './page.module.css'; // Import your CSS module
-
-const PackageInfo = ({ params }) => {
+export default function PackageInfo({ params }) {
   const { id } = params;
-  const [packageData, setPackageData] = useState(null);
+  const [pkg, setPkg] = useState(null);
+  const [status, setStatus] = useState("loading");
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`/api/packages?id=${id}`);
-        if (response.ok) {
-          const data = await response.json();
-          setPackageData(data.pkg);
-        }
-      } catch (error) {
-        console.error('Error fetching package data:', error);
-      }
-    };
-
-    if (id) {
-      fetchData();
-    }
+    fetch(`/api/packages?id=${id}`)
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((d) => { setPkg(d.pkg); setStatus("ok"); })
+      .catch(() => setStatus("missing"));
   }, [id]);
 
-  return (
-    <div className={styles.packageInfoContainer}>
-      {packageData && (
-        <div className={styles.packageDetails}>
-          <div className={styles.packageImage}>
-            <img src={packageData.photo} alt="Package Photo" />
-          </div>
-          <div className={styles.packageInfoText}>
-            <h1>Package Information</h1>
-            <h2>{packageData.packageName}</h2>
-            <p className={styles.packagePrice}>Price: ${packageData.price}</p>
-            <p className={styles.packageInfo}>Information: {packageData.information}</p>
-            <button className={styles.orderButton}>Order Package</button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
+  if (status === "loading") {
+    return <main className={`container ${styles.wrap}`}><div className={`card ${styles.loading}`} /></main>;
+  }
+  if (status === "missing") {
+    return (
+      <main className={`container ${styles.wrap}`}>
+        <h1 className="h2">Package not found</h1>
+        <Link href="/#packages" className="btn btn-ghost">← Back to packages</Link>
+      </main>
+    );
+  }
 
-export default PackageInfo;
+  return (
+    <main className={`container ${styles.wrap}`}>
+      <Link href="/#packages" className={styles.back}>← All packages</Link>
+      <div className={`card ${styles.detail}`}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={pkg.photo} alt={pkg.packageName} className={styles.image} />
+        <div className={styles.body}>
+          <span className="eyebrow">Package</span>
+          <h1 className="h2">{pkg.packageName}</h1>
+          <p className={styles.price}>${pkg.price}<small>/month</small></p>
+          <p className={styles.tagline}>{pkg.additionalInfo}</p>
+          <p className={styles.info}>{pkg.information}</p>
+          <Link href="/contact" className="btn btn-primary">Order this package</Link>
+        </div>
+      </div>
+    </main>
+  );
+}

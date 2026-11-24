@@ -1,22 +1,23 @@
-// PackageCard.js
-import Image from 'next/image';
-import styles from './page.module.css';
+import Link from "next/link";
+import styles from "./page.module.css";
 
-export default function PackageCard({ packageData }) {
+export default function PackageCard({ packageData, featured }) {
   const { id, packageName, price, photo, additionalInfo } = packageData;
-
   return (
-    <a href={`/package-info/${id}`} className={styles.card}>
-      <div className={styles.cardContent}>
-        <div className={styles.cardHeader}>
-          <Image src={photo} alt={packageName} width={200} height={150} />
-        </div>
-        <div className={styles.cardBody}>
-          <h2>{packageName}</h2>
-          <p className={styles.price}>Price: ${price}</p>
-          <p className={styles.additionalInfo}>{additionalInfo}</p>
+    <Link href={`/package-info/${id}`} className={`card ${styles.pkg} ${featured ? styles.featured : ""}`}>
+      {featured && <span className={styles.badge}>Most popular</span>}
+      <div className={styles.pkgImage}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={photo} alt={packageName} loading="lazy" />
+      </div>
+      <div className={styles.pkgBody}>
+        <h3>{packageName}</h3>
+        <p className={styles.pkgInfo}>{additionalInfo}</p>
+        <div className={styles.pkgFoot}>
+          <span className={styles.price}>${price}<small>/mo</small></span>
+          <span className={styles.more}>View details →</span>
         </div>
       </div>
-    </a>
+    </Link>
   );
 }

@@ -1,0 +1,32 @@
+:root {
+  --bg: #0b0d17; --surface: #141829; --surface-2: #1c2138; --border: #262c47;
+  --text: #eef0ff; --muted: #9aa0c3; --accent: #7c5cff; --accent-2: #00d4ff;
+  --radius: 18px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+.container { width: min(1140px, 100% - 32px); margin-inline: auto; }
+.gradient-text { background: linear-gradient(90deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 22px; border-radius: 999px; border: 1px solid transparent; font-weight: 600; font-size: 15px; cursor: pointer; transition: transform .2s, box-shadow .2s, background .2s; font-family: inherit; }
+.btn-primary { background: linear-gradient(90deg, var(--accent), #5b8cff); color: #fff; box-shadow: 0 8px 24px rgba(124,92,255,.35); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(124,92,255,.5); }
+.btn-ghost { border-color: var(--border); color: var(--text); background: transparent; }
+.btn-ghost:hover { background: var(--surface-2); }
+.input { width: 100%; padding: 13px 16px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font: inherit; outline: none; transition: border-color .2s; }
+.input:focus { border-color: var(--accent); }
+.section { padding: 96px 0; }
+.eyebrow { color: var(--accent-2); font-weight: 600; letter-spacing: .12em; text-transform: uppercase; font-size: 13px; }
+.h1 { font-size: clamp(2.4rem, 6vw, 4.2rem); line-height: 1.08; margin: 16px 0; letter-spacing: -0.02em; }
+.h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); margin: 8px 0 16px; letter-spacing: -0.01em; }
+.lead { color: var(--muted); font-size: 1.15rem; max-width: 620px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+.grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin: 48px 0; }
+.pad { padding: 28px; }
+.muted { color: var(--muted); }
+.form-stack { display: grid; gap: 12px; margin-top: 28px; padding: 28px; }
+.footer { border-top: 1px solid var(--border); padding: 32px 0; color: var(--muted); font-size: 14px; }
+.footer .container { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
