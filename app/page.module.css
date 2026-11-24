@@ -1,0 +1,161 @@
+/* page.module.css */
+
+/* Center the content */
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: -2;
+  min-height: 97vh;
+  margin-right: 25px;
+  overflow: hidden;
+}
+
+.button {
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.grid {
+  display: flex;
+  overflow: hidden;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem;
+  cursor: pointer;  
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.card {
+  flex: 1;
+  text-decoration: none;
+  background-color: #fff;
+  border: 2px solid #007BFF;
+  border-radius: 15px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 8px 16px rgba(0, 123, 255, 0.2);
+  max-width: 270px;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 24px rgba(0, 123, 255, 0.3);
+}
+
+.cardContent {
+  padding: 1rem;
+}
+
+.cardHeader {
+  text-align: center;
+}
+
+.cardHeader img {
+  max-width: 100%;
+  height: auto;
+}
+
+.cardBody {
+  padding: 1rem;
+}
+
+.cardBody h2 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.customPackage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.customPackageForm {
+  background-color: #fff;
+  border: 2px solid #007BFF;
+  border-radius: 15px;
+  box-shadow: 0 8px 12px rgba(0, 123, 255, 0.15);
+  transition: transform 0.2s, box-shadow 0.2s;
+  max-width: 380px;
+  width: 90%;
+  padding: 20px;
+  margin: 20px 0;
+  height: auto;
+  margin-right: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.customPackageForm h2 {
+  margin: 0 0 10px;
+  font-size: 1.5rem;
+}
+
+.customPackageForm input {
+  padding: 10px;
+  margin: 5px 0;
+  border: 2px solid #007BFF;
+  border-radius: 15px;
+  width: 100%;
+}
+
+/* Improve button styles and hover effect */
+.customPackageForm button {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 15px;
+  background-color: #007BFF;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+}
+
+.customPackageForm button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 123, 255, 0.3);
+}
+
+
+@media (max-width: 768px) {
+  .grid {
+    margin-top: 2rem;
+    padding: 1rem;
+  }
+  
+  .main {
+    margin-top: 10rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 60hv;
+    margin-right: 0px;
+  }
+
+  .card {
+    width: 100%;
+    margin: 1rem 0;
+  }
+
+  .customPackageForm {
+    max-width: 100%; 
+  }
+
+  .customPackageForm button {
+    padding: 10px;
+  }
+
+  .customPackage {
+    flex-direction: column;
+    align-items: center;
+  }
+}
